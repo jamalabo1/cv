@@ -1,0 +1,114 @@
+{
+  "name": "Jamal Abo Mokh",
+  "description": "Mathematics & CS Undergraduate | Experienced Software Engineer",
+  "links": [
+    "github.com/jamalabo1",
+    "linkedin.com/in/jamal-abo-mokh"
+  ],
+  "sections": {
+    "summary_highlights": {
+      "summary": {
+        "content": "Full-stack engineer with strong .NET, Node.js and React/React Native background. Experienced with building event-driven microservices and distributed systems, with hands-on in CI/CD, testing automation and cloud deployments. Passionate about performance, developer experience, and clean architecture."
+      },
+      "highlights": {
+        "content": [
+          "Quick learner & adaptable",
+          "Experienced app builder",
+          "Event-driven & microservices",
+          "CI/CD, testing, Git expertise"
+        ]
+      }
+    },
+    "skills": {
+      "items": [
+        {
+          "title": ".NET & Back-End",
+          "description": "ASP.NET, Web API, Hosted Services, Console Apps, Entity Framework Core",
+          "tags": [
+            "C#",
+            "EF Core",
+            "REST/GraphQL"
+          ]
+        },
+        {
+          "title": "Frontend & Mobile",
+          "description": "React, React Native, TypeScript",
+          "tags": [
+            "Redux",
+            "React Query",
+            "Expo",
+            "RTK Query",
+            "Tailwind"
+          ]
+        },
+        {
+          "title": "Node.js & Tooling",
+          "description": "Node.js, TypeScript, NPM/Yarn, build tooling",
+          "tags": [
+            "Apollo",
+            "Mongoose",
+            "Playwright"
+          ]
+        },
+        {
+          "title": "DevOps",
+          "description": "Git, CI/CD, Automated Testing, Containers",
+          "tags": [
+            "GitHub Actions",
+            "Docker",
+            "Linting"
+          ]
+        },
+        {
+          "title": "C++",
+          "description": "CMake, Boost, Google Fruit, gTest",
+          "tags": [
+            "Modern C++",
+            "Unit Testing"
+          ]
+        },
+        {
+          "title": "Distributed Systems",
+          "description": "Event-Driven Architecture, Microservices, Messaging",
+          "tags": [
+            "Sagas",
+            "Pub/Sub",
+            "Observability"
+          ]
+        }
+      ]
+    },
+    "projects": {
+      "items": [
+        {
+          "title": "Event-Driven Logistics Platform",
+          "description": "Microservices orchestrating orders, parcel routing, and label printing using .NET, through Azure & AWS with React Native app for warehouse.",
+          "highlights": [
+            "Saga orchestration, resilient messaging, and observability",
+            "Expo RN app with react-query w/ graphql",
+            "Playwright & tailwind statistical reports",
+            "On premise ql-700 controller for package labeling",
+            "Azure (aspire) & AWS (amplify) deployments"
+          ]
+        },
+        {
+          "title": "Parking Alert System",
+          "description": "Computer vision powered application that processes live CCTV feeds using deep learning to detect vehicles blocking entrances or parked illegally. Implemented real-time object filtering and decision algorithms to ensure accuracy. on premise audio controller triggers configurable audio notifications, transmitted via Bluetooth to portable speakers.",
+          "highlights": [
+            "RabbitMQ, messaging & pub/sub",
+            "OpenCV, YoloV4",
+            "C++, Containers, CI/CD"
+          ]
+        }
+      ]
+    },
+    "education": {
+      "degree": "B.Sc. in Mathematics with Computer Science",
+      "institution": "Technion",
+      "year": 2024
+    },
+    "notes": {
+      "content": "This page was written in React & Tailwind, SSG using Gatsby and exported to PDF with Playwright through github actions artifacts."
+    }
+  }
+}
