@@ -46,11 +46,12 @@ const IndexPage: FC<
                         links={links}
                     />
 
-                    <div className="mt-4">
-                        <span className="px-2 italic text-slate-500">{note}</span>
-                    </div>
-
                     <div className="p-8 pb-10">
+
+                        <div className="mb-4">
+                            <span className="px-2 italic text-slate-500">{note}</span>
+                        </div>
+
                         <div className="grid md:grid-cols-3 gap-6">
                             <Card
                                 className="col-span-2 p-5 shadow-sm"
@@ -173,7 +174,6 @@ const IndexPage: FC<
                                 </div>
                             </Card>
                         </div>
-
 
                     </div>
                 </section>
