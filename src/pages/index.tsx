@@ -35,9 +35,10 @@ const IndexPage: FC<
      }) => {
 
     return (
-        <div className='w-full bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-800 antialiased'>
+        <div
+             className='w-full  text-slate-800 antialiased'>
 
-            <div className="mx-auto max-w-4xl p-4">
+            <div  id='resume' className="mx-auto max-w-4xl p-4">
 
                 <section
                     className="bg-white rounded-3xl shadow-[0_20px_50px_-20px_rgb(2,6,23,0.2)] ring-1 ring-slate-200 overflow-hidden">

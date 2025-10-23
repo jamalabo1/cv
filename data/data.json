@@ -108,7 +108,7 @@
       "year": 2024
     },
     "notes": {
-      "content": "This page was written in React & Tailwind, SSG using Gatsby and exported to PDF with Playwright through github actions artifacts."
+      "content": "This page was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available through my github"
     }
   }
 }
