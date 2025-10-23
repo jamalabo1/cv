@@ -12,8 +12,6 @@ type DeepRequired<T> = {
         : NonNullable<T[K]>;
 };
 
-// type DataType = DeepRequired<Queries.ResumeQuery['allD']>[''];
-
 const IndexPage: FC<
     PageProps<
         DeepRequired<Queries.ResumeQuery>
@@ -27,9 +25,9 @@ const IndexPage: FC<
                      summary_highlights,
                      skills,
                      projects,
-                     education,
-                     notes
-                 }
+                     education
+                 },
+                 note
              }
          }
      }) => {
@@ -49,9 +47,14 @@ const IndexPage: FC<
                     />
 
                     <div className="p-8 pb-10">
+
+                        <div className="mb-4">
+                            <span className="px-2 italic text-slate-500">{note}</span>
+                        </div>
+
                         <div className="grid md:grid-cols-3 gap-6">
                             <Card
-                                className="col-span-2 bg-gradient-to-br from-slate-50 p-5 shadow-sm"
+                                className="col-span-2 p-5 shadow-sm"
                             >
                                 <Card.Title>
                                     Summary
@@ -62,7 +65,7 @@ const IndexPage: FC<
                             </Card>
 
                             <Card
-                                className="bg-gradient-to-br from-slate-50 flex flex-col gap-2 p-5 shadow-sm"
+                                className="flex flex-col gap-2 p-5 shadow-sm"
                             >
                                 <Card.Title>
                                     Highlights
@@ -172,9 +175,6 @@ const IndexPage: FC<
                             </Card>
                         </div>
 
-                        <div className="mt-4">
-                            <span className="px-2 italic text-slate-500">{notes.content}</span>
-                        </div>
                     </div>
                 </section>
             </div>
@@ -222,10 +222,8 @@ export const query = graphql`
                     institution
                     year
                 }
-                notes {
-                    content
-                }
             }
+            note
         }
     }
 `;

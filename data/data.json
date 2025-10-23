@@ -43,7 +43,7 @@
         },
         {
           "title": "Node.js & Tooling",
-          "description": "Node.js, TypeScript, NPM/Yarn, build tooling",
+          "description": "Node.js, TypeScript, npm/yarn, build tooling",
           "tags": [
             "Apollo",
             "Mongoose",
@@ -106,9 +106,7 @@
       "degree": "B.Sc. in Mathematics with Computer Science",
       "institution": "Technion",
       "year": 2024
-    },
-    "notes": {
-      "content": "This page was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available through my github"
     }
-  }
+  },
+  "note": "This resume was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available in my github"
 }

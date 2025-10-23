@@ -1,9 +1,10 @@
-name: Build Gatsby and Export to PDF
+name: Build and Export to PDF
 
 on:
   push:
     branches:
       - main
+      - staging
 
 jobs:
   export:
@@ -14,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -33,26 +34,8 @@ jobs:
           mkdir -p out
           OUTPUT_PATH=out/output.pdf node export-pdf.js
           ls -lah out
-      #      - name: Docker Buildx
-      #        uses: docker/setup-buildx-action@v3
-      #
-      #      - name: Build image
-      #        uses: docker/build-push-action@v6
-      #        with:
-      #          context: .
-      #          file: ./Dockerfile
-      #          tags: resume
-      #          load: true
-      #          cache-from: type=gha
-      #          cache-to: type=gha,mode=max
-      #
-      #      - name: Run container to generate PDF
-      #        run: |
-      #          mkdir -p out
-      #          docker run --rm -v "$PWD/out:/out" resume
-      #          ls -lah out
 
-      - name: Upload PDF artifact
+      - name: upload pdf resume
         uses: actions/upload-artifact@v4
         with:
           name: exported-resume
