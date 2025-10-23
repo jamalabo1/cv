@@ -1,0 +1,61 @@
+name: Build Gatsby and Export to PDF
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Prepare packages
+        run: |
+          npm ci --omit=dev
+          npm install playwright
+
+      - name: build
+        run: npm run build
+
+      - name: export
+        run: |
+          mkdir -p out
+          OUTPUT_PATH=out/output.pdf node export-pdf.js
+          ls -lah out
+      #      - name: Docker Buildx
+      #        uses: docker/setup-buildx-action@v3
+      #
+      #      - name: Build image
+      #        uses: docker/build-push-action@v6
+      #        with:
+      #          context: .
+      #          file: ./Dockerfile
+      #          tags: resume
+      #          load: true
+      #          cache-from: type=gha
+      #          cache-to: type=gha,mode=max
+      #
+      #      - name: Run container to generate PDF
+      #        run: |
+      #          mkdir -p out
+      #          docker run --rm -v "$PWD/out:/out" resume
+      #          ls -lah out
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: exported-resume
+          path: out/output.pdf
+          if-no-files-found: error
+          retention-days: 14
