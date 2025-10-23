@@ -25,9 +25,9 @@ const IndexPage: FC<
                      summary_highlights,
                      skills,
                      projects,
-                     education,
-                     notes
-                 }
+                     education
+                 },
+                 note
              }
          }
      }) => {
@@ -45,6 +45,10 @@ const IndexPage: FC<
                         description={description}
                         links={links}
                     />
+
+                    <div className="mt-4">
+                        <span className="px-2 italic text-slate-500">{note}</span>
+                    </div>
 
                     <div className="p-8 pb-10">
                         <div className="grid md:grid-cols-3 gap-6">
@@ -170,9 +174,7 @@ const IndexPage: FC<
                             </Card>
                         </div>
 
-                        <div className="mt-4">
-                            <span className="px-2 italic text-slate-500">{notes.content}</span>
-                        </div>
+
                     </div>
                 </section>
             </div>
@@ -220,10 +222,8 @@ export const query = graphql`
                     institution
                     year
                 }
-                notes {
-                    content
-                }
             }
+            note
         }
     }
 `;
