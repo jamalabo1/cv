@@ -12,8 +12,6 @@ type DeepRequired<T> = {
         : NonNullable<T[K]>;
 };
 
-// type DataType = DeepRequired<Queries.ResumeQuery['allD']>[''];
-
 const IndexPage: FC<
     PageProps<
         DeepRequired<Queries.ResumeQuery>
@@ -51,7 +49,7 @@ const IndexPage: FC<
                     <div className="p-8 pb-10">
                         <div className="grid md:grid-cols-3 gap-6">
                             <Card
-                                className="col-span-2 bg-gradient-to-br from-slate-50 p-5 shadow-sm"
+                                className="col-span-2 p-5 shadow-sm"
                             >
                                 <Card.Title>
                                     Summary
@@ -62,7 +60,7 @@ const IndexPage: FC<
                             </Card>
 
                             <Card
-                                className="bg-gradient-to-br from-slate-50 flex flex-col gap-2 p-5 shadow-sm"
+                                className="flex flex-col gap-2 p-5 shadow-sm"
                             >
                                 <Card.Title>
                                     Highlights
