@@ -50,6 +50,7 @@ jobs:
           retention-days: 90
 
       - name: create release
+        if: github.event_name != 'pull_request'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "out/output.pdf"
