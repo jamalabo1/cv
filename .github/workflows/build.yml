@@ -2,9 +2,16 @@ name: Build and Export to PDF
 
 on:
   push:
+    tags:
+      - "v*"
     branches:
       - main
+  pull_request:
+    branches:
       - staging
+
+permissions:
+  contents: write
 
 jobs:
   export:
@@ -33,7 +40,6 @@ jobs:
         run: |
           mkdir -p out
           OUTPUT_PATH=out/output.pdf node export-pdf.js
-          ls -lah out
 
       - name: upload pdf resume
         uses: actions/upload-artifact@v4
@@ -41,4 +47,13 @@ jobs:
           name: exported-resume
           path: out/output.pdf
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 90
+
+      - name: create release
+        if: github.event_name != 'pull_request'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "out/output.pdf"
+          name: "Resume ${{ github.ref_name }}"
+          body: "pdf release of the cv"
+          allowUpdates: true
