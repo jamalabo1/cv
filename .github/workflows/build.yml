@@ -7,10 +7,11 @@ on:
     branches:
       - main
   pull_request:
-    tags:
-      - "v*"
     branches:
       - staging
+
+permissions:
+  contents: write
 
 jobs:
   export:
@@ -47,10 +48,11 @@ jobs:
           path: out/output.pdf
           if-no-files-found: error
           retention-days: 90
+
       - name: create release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "out/output.pdf"  
+          artifacts: "out/output.pdf"
           name: "Resume ${{ github.ref_name }}"
           body: "pdf release of the cv"
           allowUpdates: true
