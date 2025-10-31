@@ -51,7 +51,7 @@ async function main() {
     });
 
     await browser.close();
-    console.log(`PDF generated at {outputPath}`);
+    console.log(`PDF generated at ${outputPath}`);
 }
 
 main().catch(err => {

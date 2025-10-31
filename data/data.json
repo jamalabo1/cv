@@ -6,6 +6,7 @@
     "linkedin.com/in/jamal-abo-mokh"
   ],
   "sections": {
+    "note": "This resume was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available in my github",
     "summary_highlights": {
       "summary": {
         "content": "Full-stack engineer with strong .NET, Node.js and React/React Native background. Experienced with building event-driven microservices and distributed systems, with hands-on in CI/CD, testing automation and cloud deployments. Passionate about performance, developer experience, and clean architecture."
@@ -106,7 +107,28 @@
       "degree": "B.Sc. in Mathematics with Computer Science",
       "institution": "Technion",
       "year": 2024
-    }
-  },
-  "note": "This resume was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available in my github"
+    },
+    "courses": [
+      {
+        "id": "234118",
+        "title": "Computer Organization and Programming"
+      },
+      {
+        "id": "234124",
+        "title": "Introduction to Systems Programming"
+      },
+      {
+        "id": "234218",
+        "title": "Data Structures"
+      },
+      {
+        "id": "104222",
+        "title": "Probability theory"
+      },
+      {
+        "id": "104158",
+        "title": "Introduction to group theory"
+      }
+    ]
+  }
 }
