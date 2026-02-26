@@ -8,6 +8,7 @@ import Chip from "@components/chip";
 import Container from "@components/container";
 import Elements from "@components/elements";
 
+
 type DeepRequired<T> = {
     [K in keyof T]-?: NonNullable<T[K]> extends object
         ? DeepRequired<NonNullable<T[K]>>
@@ -50,7 +51,9 @@ const IndexPage: FC<
                 <Elements.Note>
                     {note}
                 </Elements.Note>
-                <div className="mt-8">
+
+                <Elements.Component>
+
                     <Card.Title>
                         Overview
                     </Card.Title>
@@ -87,9 +90,10 @@ const IndexPage: FC<
                             </ul>
                         </Card>
                     </div>
-                </div>
+                </Elements.Component>
 
-                <div className="mt-8">
+                <Elements.Component breakable>
+
                     <Card.Title>
                         Selected Projects
                     </Card.Title>
@@ -119,64 +123,63 @@ const IndexPage: FC<
                             ))
                         }
                     </div>
-                </div>
+                </Elements.Component>
 
-                <div className="mt-8">
-                    <div>
-
-                        <Card.Title>
-                            Highlighted Courses
-                        </Card.Title>
-                        <div className="mt-3 grid grid-cols-3 gap-4">
-                            {
-                                courses.map(course => (
-                                    <Card
-                                        key={course.title}
-                                        className="flex items-center justify-center p-5"
-                                    >
-                                        <h3 className="font-semibold break-words hyphens-auto text-center">
-                                            {course.title}
-                                            <span className='px-1'>
+                <Elements.Component>
+                    <Card.Title>
+                        Highlighted Courses
+                    </Card.Title>
+                    <div className="mt-3 grid grid-cols-3 gap-4">
+                        {
+                            courses.map(course => (
+                                <Card
+                                    key={course.title}
+                                    className="flex items-center justify-center p-5"
+                                >
+                                    <h3 className="font-semibold break-words hyphens-auto text-center">
+                                        {course.title}
+                                        <span className='px-1'>
                                         -
                                         </span>
-                                            <span className='text-brand-700'>
+                                        <span className='text-brand-700'>
                                             {course.id}
                                         </span>
-                                        </h3>
-                                    </Card>
-                                ))
-                            }
-                        </div>
+                                    </h3>
+                                </Card>
+                            ))
+                        }
                     </div>
+                </Elements.Component>
 
-                    <div className="mt-4 grid gap-6">
-                        <Card className='p-4'>
-                            <Card.Title>
-                                Education
-                            </Card.Title>
-                            <div className="mt-2 text-sm text-slate-700">
-                                {
-                                    <div
-                                        key={`${education.degree}-${education.institution}`}
-                                        className="flex items-baseline justify-between"
-                                    >
-                                        <p className="font-medium">
-                                            {education.degree} — {education.institution}
-                                        </p>
-                                        <span className="text-slate-500">
+
+                {
+                    //mt-4 grid gap-6
+                }
+                < Elements.Component>
+                    <Card className='p-4'>
+                        <Card.Title>
+                            Education
+                        </Card.Title>
+                        <div className="mt-2 text-sm text-slate-700">
+                            {
+                                <div
+                                    key={`${education.degree}-${education.institution}`}
+                                    className="flex items-baseline justify-between"
+                                >
+                                    <p className="font-medium">
+                                        {education.degree} — {education.institution}
+                                    </p>
+                                    <span className="text-slate-500">
                                         {education.year} -
                                     </span>
-                                    </div>
-                                }
-                            </div>
-                        </Card>
-                    </div>
-
-                </div>
+                                </div>
+                            }
+                        </div>
+                    </Card>
+                </Elements.Component>
 
 
-
-                <div className="mt-6">
+                < Elements.Component>
                     <Card.Title>Core Skills</Card.Title>
 
                     <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -209,7 +212,7 @@ const IndexPage: FC<
                             ))
                         }
                     </div>
-                </div>
+                </Elements.Component>
 
 
             </div>
@@ -226,39 +229,50 @@ export const Head: HeadFC = () =>
 
 export const query = graphql`
     query Resume {
-        dataJson {
+        dataJson
+        {
             name
             description
             links
-            sections {
-                summary_highlights {
-                    summary {
+            sections
+            {
+                summary_highlights
+                {
+                    summary
+                    {
                         content
                     }
-                    highlights {
+                    highlights
+                    {
                         content
                     }
                 }
-                skills {
-                    items {
+                skills
+                {
+                    items
+                    {
                         title
                         description
                         tags
                     }
                 }
-                projects {
-                    items {
+                projects
+                {
+                    items
+                    {
                         title
                         description
                         highlights
                     }
                 }
-                education {
+                education
+                {
                     degree
                     institution
                     year
                 }
-                courses {
+                courses
+                {
                     id
                     title
                 }

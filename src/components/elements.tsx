@@ -1,4 +1,6 @@
+import type {FC, HTMLProps, PropsWithChildren} from 'react'
 import React, {FCWithChildren} from 'react';
+import clsx from "clsx";
 
 const Note: FCWithChildren = ({children}) => {
     return (
@@ -21,9 +23,38 @@ const ListAnchor: FCWithChildren = ({children}) => {
     )
 }
 
+const Atomic: FC<HTMLProps<HTMLDivElement> & { disable?: boolean }> = ({className, disable, ...rest}) => {
+    return (
+        <div
+            className={
+                clsx(
+                    className,
+                    {
+                        "break-inside-avoid": !disable
+                    }
+                )
+            }
+            {...rest}
+        />
+    );
+};
+
+type ComponentProps = {
+    breakable?: boolean
+}
+const Component: FC<PropsWithChildren<ComponentProps>> = ({children, breakable = false}) => {
+    return (
+        <Atomic className={"mt-8"} disable={breakable}>
+            {children}
+        </Atomic>
+    );
+};
+
 class Elements {
     static ListAnchor = ListAnchor;
     static Note = Note;
+    static Atomic = Atomic;
+    static Component = Component;
 }
 
 export default Elements;

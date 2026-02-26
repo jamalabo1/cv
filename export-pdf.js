@@ -1,4 +1,4 @@
-const {chromium} = require('playwright');
+const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
@@ -10,44 +10,25 @@ async function main() {
     }
 
     const outputPath = process.env.OUTPUT_PATH || path.resolve(__dirname, 'output.pdf');
-
-    const browser = await chromium.launch({headless: true});
-
+    const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
-
     const url = 'file://' + indexPath.replace(/\\/g, '/');
 
-    await page.goto(url, {waitUntil: 'networkidle'});
+    // Wait for network to settle (React/Gatsby hydration)
+    await page.goto(url, { waitUntil: 'networkidle' });
 
-    await page.emulateMedia({ media: "screen" });
+    // Force CSS media type to screen to retain Tailwind styling
+    await page.emulateMedia({ media: 'screen' });
 
-    const { width, height } = await page.evaluate(() => {
-        const body = document.body;
-        const html = document.documentElement;
-        const fullWidth = Math.max(
-            body.scrollWidth,
-            body.offsetWidth,
-            html.clientWidth,
-            html.scrollWidth,
-            html.offsetWidth
-        );
-        const fullHeight = Math.max(
-            body.scrollHeight,
-            body.offsetHeight,
-            html.clientHeight,
-            html.scrollHeight,
-            html.offsetHeight
-        );
-        return { width: fullWidth, height: fullHeight };
-    });
+    // Explicitly wait for all web fonts to load to prevent vector/ligature errors
+    await page.evaluate(() => document.fonts.ready);
 
+    // Export as standard A4 for ATS compatibility
     await page.pdf({
         path: outputPath,
-        width: `${width}px`,
-        height: `${height}px`,
+        format: 'A4',
         printBackground: true,
-        scale: 1,
-        preferCSSPageSize: false,
+        preferCSSPageSize: true, // Allows CSS @page { size: A4; } to dictate margins
     });
 
     await browser.close();

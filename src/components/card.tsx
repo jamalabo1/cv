@@ -1,5 +1,6 @@
 import React, {FCWithChildren, PropsWithChildren} from 'react';
 import clsx from "clsx";
+import Elements from "./elements";
 
 
 const CardTitle: FCWithChildren = ({children}) => {
@@ -28,6 +29,7 @@ export const CardFooter: FCWithChildren = ({children}) => {
 
 export type CardProps = {
     className?: string;
+    atomic?:boolean
 };
 
 function Card(
@@ -37,7 +39,7 @@ function Card(
         ...rest
     }: PropsWithChildren<CardProps>) {
     return (
-        <div
+        <Elements.Atomic
             className={
                 clsx(
                     "bg-white rounded-2xl border border-slate-200",
@@ -47,7 +49,7 @@ function Card(
             {...rest}
         >
             {children}
-        </div>
+        </Elements.Atomic>
     );
 }
 

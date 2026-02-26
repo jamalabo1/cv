@@ -3,7 +3,7 @@ import React, {FCWithChildren} from 'react';
 const Container: FCWithChildren = ({children}) => {
     return (
         <div
-            className='w-full  text-slate-800 antialiased'>
+            className='w-full text-slate-800 antialiased'>
 
             <div id='resume' className="mx-auto max-w-4xl p-4">
 
