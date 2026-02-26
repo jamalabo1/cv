@@ -50,6 +50,44 @@ const IndexPage: FC<
                 <Elements.Note>
                     {note}
                 </Elements.Note>
+                <div className="mt-8">
+                    <Card.Title>
+                        Overview
+                    </Card.Title>
+                    <div className="mt-3 grid grid-cols-3 gap-6">
+
+                        <Card
+                            className="col-span-2 p-5 shadow-sm"
+                        >
+                            <Card.Title>
+                                Summary
+                            </Card.Title>
+                            <Card.Content>
+                                {summary_highlights.summary.content}
+                            </Card.Content>
+                        </Card>
+
+                        <Card
+                            className="flex flex-col gap-2 p-5 shadow-sm"
+                        >
+                            <Card.Title>
+                                Highlights
+                            </Card.Title>
+
+                            <ul className="space-y-2 text-sm">
+                                {
+                                    summary_highlights.highlights.content.map(highlight => (
+                                        <Elements.ListAnchor
+                                            key={highlight}
+                                        >
+                                            {highlight}
+                                        </Elements.ListAnchor>
+                                    ))
+                                }
+                            </ul>
+                        </Card>
+                    </div>
+                </div>
 
                 <div className="mt-8">
                     <Card.Title>
@@ -136,45 +174,6 @@ const IndexPage: FC<
 
                 </div>
 
-
-                <div className="mt-8">
-                    <Card.Title>
-                        Overview
-                    </Card.Title>
-                    <div className="mt-3 grid grid-cols-3 gap-6">
-
-                        <Card
-                            className="col-span-2 p-5 shadow-sm"
-                        >
-                            <Card.Title>
-                                Summary
-                            </Card.Title>
-                            <Card.Content>
-                                {summary_highlights.summary.content}
-                            </Card.Content>
-                        </Card>
-
-                        <Card
-                            className="flex flex-col gap-2 p-5 shadow-sm"
-                        >
-                            <Card.Title>
-                                Highlights
-                            </Card.Title>
-
-                            <ul className="space-y-2 text-sm">
-                                {
-                                    summary_highlights.highlights.content.map(highlight => (
-                                        <Elements.ListAnchor
-                                            key={highlight}
-                                        >
-                                            {highlight}
-                                        </Elements.ListAnchor>
-                                    ))
-                                }
-                            </ul>
-                        </Card>
-                    </div>
-                </div>
 
 
                 <div className="mt-6">

@@ -3,7 +3,7 @@ import React, {FCWithChildren} from 'react';
 const Note: FCWithChildren = ({children}) => {
     return (
         <div className="mb-4">
-            <span className="px-2 italic text-slate-500">
+            <span className="px-2 italic text-slate-600">
                 {children}
             </span>
         </div>
