@@ -1,79 +1,74 @@
 {
   "name": "Jamal Abo Mokh",
-  "description": "Mathematics & CS Undergraduate | Experienced Software Engineer",
+  "description": "Mathematics & CS Undergraduate",
   "links": [
     "github.com/jamalabo1",
     "linkedin.com/in/jamal-abo-mokh"
   ],
   "sections": {
+    "note": "This resume was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available in my github",
     "summary_highlights": {
       "summary": {
-        "content": "Full-stack engineer with strong .NET, Node.js and React/React Native background. Experienced with building event-driven microservices and distributed systems, with hands-on in CI/CD, testing automation and cloud deployments. Passionate about performance, developer experience, and clean architecture."
+        "content": "I reason from first principles, I formalize requirements, identify invariants, and translate them into clean backend systems. I work comfortably with databases, APIs, and data pipelines, and I’m especially strong at rigorous mathematical thinking and building reliable abstractions under uncertainty. I learn new domains quickly, take ownership of loosely defined problems, and proactively build tooling when needed. I enjoy work that demands both theoretical clarity and strong engineering execution."
       },
       "highlights": {
         "content": [
           "Quick learner & adaptable",
           "Experienced app builder",
+          "CI/CD, testing, Git expertise",
           "Event-driven & microservices",
-          "CI/CD, testing, Git expertise"
+          "Applied ML Models"
         ]
       }
     },
     "skills": {
       "items": [
         {
-          "title": ".NET & Back-End",
-          "description": "ASP.NET, Web API, Hosted Services, Console Apps, Entity Framework Core",
+          "title": "Languages",
+          "description": "C++, C#, Python, TypeScript",
           "tags": [
-            "C#",
+            "Modern C++",
+            "Strong Typing",
+            "Object-Oriented Design"
+          ]
+        },
+        {
+          "title": "Backend & Distributed Systems",
+          "description": "ASP.NET Core, Node.js, Event-Driven Architecture, Microservices, RabbitMQ",
+          "tags": [
             "EF Core",
-            "REST/GraphQL"
+            "REST/GraphQL",
+            "Sagas",
+            "Pub/Sub",
+            "Observability"
           ]
         },
         {
           "title": "Frontend & Mobile",
-          "description": "React, React Native, TypeScript",
+          "description": "React, React Native, Expo, Apollo",
           "tags": [
-            "Redux",
             "React Query",
-            "Expo",
-            "RTK Query",
+            "Redux/RTK",
             "Tailwind"
           ]
         },
         {
-          "title": "Node.js & Tooling",
-          "description": "Node.js, TypeScript, npm/yarn, build tooling",
+          "title": "Machine Learning & Data Pipelines",
+          "description": "Vision-Language Models (CLIP, Qwen), Object Detection (YOLO), OpenCV, Semantic Search, Scrapy",
           "tags": [
-            "Apollo",
-            "Mongoose",
-            "Playwright"
+            "Local Inference",
+            "Vector Search",
+            "OCR"
           ]
         },
         {
-          "title": "DevOps",
-          "description": "Git, CI/CD, Automated Testing, Containers",
+          "title": "Infrastructure, DevOps & Testing",
+          "description": "Docker, GitHub Actions, CMake, Playwright, gTest, Boost, Google Fruit",
           "tags": [
-            "GitHub Actions",
-            "Docker",
-            "Linting"
-          ]
-        },
-        {
-          "title": "C++",
-          "description": "CMake, Boost, Google Fruit, gTest",
-          "tags": [
-            "Modern C++",
-            "Unit Testing"
-          ]
-        },
-        {
-          "title": "Distributed Systems",
-          "description": "Event-Driven Architecture, Microservices, Messaging",
-          "tags": [
-            "Sagas",
-            "Pub/Sub",
-            "Observability"
+            "CI/CD",
+            "E2E Testing",
+            "Unit Testing",
+            "Containers"
           ]
         }
       ]
@@ -81,23 +76,33 @@
     "projects": {
       "items": [
         {
+          "title": "Multimodal Asset Catalog Pipeline",
+          "description": "Local-first data pipeline utilizing vision-language models and semantic search to ingest, process, and organize large-scale image and document collections.",
+          "highlights": [
+            "Integrated VL models (CLIP, Qwen) and YOLO for automated asset tagging and zero-shot classification",
+            "Implemented vector-based semantic search and OCR for complex multimodal retrieval",
+            "Developed custom web scraping ingestion pipelines utilizing Scrapy",
+            "Architected local-inference infrastructure ensuring offline processing capability"
+          ]
+        },
+        {
           "title": "Event-Driven Logistics Platform",
-          "description": "Microservices orchestrating orders, parcel routing, and label printing using .NET, through Azure & AWS with React Native app for warehouse.",
+          "description": "A distributed .NET microservices platform managing order orchestration, parcel routing, and physical label printing. with a React Native mobile application for warehouse operators.",
           "highlights": [
             "Saga orchestration, resilient messaging, and observability",
             "Expo RN app with react-query w/ graphql",
-            "Playwright & tailwind statistical reports",
-            "On premise ql-700 controller for package labeling",
+            "Playwright & Tailwind statistical reports",
+            "On Premise QL-700 controller for package labeling",
             "Azure (aspire) & AWS (amplify) deployments"
           ]
         },
         {
           "title": "Parking Alert System",
-          "description": "Computer vision powered application that processes live CCTV feeds using deep learning to detect vehicles blocking entrances or parked illegally. Implemented real-time object filtering and decision algorithms to ensure accuracy. on premise audio controller triggers configurable audio notifications, transmitted via Bluetooth to portable speakers.",
+          "description": "A real-time computer vision system that monitors live CCTV feeds to detect vehicles blocking entrances. It filters out false positives and signals an on-premise controller to broadcast custom audio warnings through Bluetooth speakers.",
           "highlights": [
-            "RabbitMQ, messaging & pub/sub",
-            "OpenCV, YoloV4",
-            "C++, Containers, CI/CD"
+            "Built the core detection pipeline in C++ using OpenCV and YOLOv4",
+            "Managed asynchronous system events using RabbitMQ pub/sub",
+            "Packaged and deployed the entire stack via Docker and automated CI/CD"
           ]
         }
       ]
@@ -106,7 +111,28 @@
       "degree": "B.Sc. in Mathematics with Computer Science",
       "institution": "Technion",
       "year": 2024
-    }
-  },
-  "note": "This resume was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available in my github"
+    },
+    "courses": [
+      {
+        "id": "234118",
+        "title": "Computer Organization and Programming"
+      },
+      {
+        "id": "234124",
+        "title": "Introduction to Systems Programming"
+      },
+      {
+        "id": "234218",
+        "title": "Data Structures"
+      },
+      {
+        "id": "104222",
+        "title": "Probability theory"
+      },
+      {
+        "id": "104142",
+        "title": "Intro to metric and topological spaces"
+      }
+    ]
+  }
 }
