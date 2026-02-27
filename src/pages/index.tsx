@@ -41,7 +41,7 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
         },
     } = data;
 
-    const PAGE_HEIGHT = 900;
+    const PAGE_HEIGHT = 970;
 
     const sections = useMemo(() => ([
         {type: "overview", items: [summary_highlights]},
@@ -54,8 +54,7 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
     const {
         flatItems,
         pages,
-        measureRef,
-        measureContainerStyle
+        measureRef
     } = usePagedLayout({
         sections,
         pageHeight: PAGE_HEIGHT
@@ -115,13 +114,11 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                 <Container>
                     <PageHeader description={description} links={links}/>
                     <div className="relative p-8 pb-10">
-                        <div style={measureContainerStyle} aria-hidden>
                             {flatItems.map((item, index) => (
                                 <div key={`${item.type}-${index}`} ref={measureRef(index)}>
                                     {renderMeasureItem(item)}
                                 </div>
                             ))}
-                        </div>
                     </div>
                 </Container>
             ) : (

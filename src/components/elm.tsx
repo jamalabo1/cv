@@ -1,9 +1,8 @@
-import React, {createContext, FCWithChildren, useContext, useId, useLayoutEffect, useRef} from "react";
+import React, {createContext, useContext} from "react";
 import Elements from "./elements";
 import Card from "@components/card";
 import Chip from "@components/chip";
 import {CollectableItemType} from "../types/collectable";
-import {chunk} from 'lodash';
 /* ---------------------------------- Types --------------------------------- */
 
 type SummaryHighlights = {
@@ -70,28 +69,6 @@ export function useCollectables() {
     return ctx;
 }
 
-const Collectable: FCWithChildren<{ type: string }> = ({children, type}) => {
-    const id = useId();
-
-    const ref = useRef<HTMLDivElement>(null);
-
-    const collectables = useCollectables();
-
-    useLayoutEffect(() => {
-        collectables.registerFunc(id, {
-            ref,
-            type
-        });
-    }, []);
-
-    return (
-        <div ref={ref}>
-            {children}
-        </div>
-    )
-};
-
-
 
 /* ----------------------------- Reusable cards ----------------------------- */
 
@@ -106,17 +83,15 @@ export function SummaryCard({content}: { content: React.ReactNode }) {
 
 export function HighlightsCard({highlights}: { highlights: readonly string[] }) {
     return (
-        <Collectable type="highlight">
-            <Card className="flex flex-col gap-2 p-5 shadow-sm">
-                <Card.Title>Highlights</Card.Title>
+        <Card className="flex flex-col gap-2 p-5 shadow-sm h-full">
+            <Card.Title>Highlights</Card.Title>
 
-                <ul className="space-y-2 text-sm">
-                    {highlights.map((highlight) => (
-                        <Elements.ListAnchor key={highlight}>{highlight}</Elements.ListAnchor>
-                    ))}
-                </ul>
-            </Card>
-        </Collectable>
+            <ul className="space-y-2 text-sm">
+                {highlights.map((highlight) => (
+                    <Elements.ListAnchor key={highlight}>{highlight}</Elements.ListAnchor>
+                ))}
+            </ul>
+        </Card>
     );
 }
 
@@ -173,7 +148,10 @@ export function OverviewSection({
     summaryHighlights: SummaryHighlights;
 }) {
     return (
-        <Collectable type="highlight">
+        <>
+            <Elements.Note>
+                {note}
+            </Elements.Note>
             <Elements.Component>
                 <Card.Title>Overview</Card.Title>
                 <div className="mt-3 grid grid-cols-3 gap-6">
@@ -181,30 +159,23 @@ export function OverviewSection({
                     <HighlightsCard highlights={summaryHighlights.highlights.content}/>
                 </div>
             </Elements.Component>
-        </Collectable>
+        </>
+
     );
 }
 
 export function SelectedProjectsSection({projects}: { projects: ProjectsBlock }) {
 
-    const chunks = chunk(projects.items, 2);
-
     return (
         <Elements.Component breakable>
             <Card.Title>Selected Projects</Card.Title>
 
-            <div className="mt-3 grid gap-4">
-                {chunks.map((chunk) => (
-                    <Collectable type={"project"}>
-                        <div className="grid grid-cols-2 gap-2">
-                            {
-                                chunk.map((project) => (
-                                    <ProjectCard key={project.title} project={project}/>
-                                ))
-                            }
-                        </div>
-                    </Collectable>
-                ))}
+            <div className="mt-3 grid grid-cols-2 gap-4">
+                {
+                    projects.items.map(project =>
+                        <ProjectCard key={project.title} project={project}/>
+                    )
+                }
             </div>
         </Elements.Component>
     );
@@ -212,17 +183,15 @@ export function SelectedProjectsSection({projects}: { projects: ProjectsBlock })
 
 export function HighlightedCoursesSection({courses}: { courses: readonly Course[] }) {
     return (
-        <Collectable type="courses">
-            <Elements.Component>
-                <Card.Title>Highlighted Courses</Card.Title>
+        <Elements.Component>
+            <Card.Title>Highlighted Courses</Card.Title>
 
-                <div className="mt-3 grid grid-cols-3 gap-4">
-                    {courses.map((course) => (
-                        <CourseCard key={`${course.id}-${course.title}`} course={course}/>
-                    ))}
-                </div>
-            </Elements.Component>
-        </Collectable>
+            <div className="mt-3 grid grid-cols-3 gap-4">
+                {courses.map((course) => (
+                    <CourseCard key={`${course.id}-${course.title}`} course={course}/>
+                ))}
+            </div>
+        </Elements.Component>
     );
 }
 

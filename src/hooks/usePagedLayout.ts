@@ -1,4 +1,4 @@
-import type {CSSProperties} from "react";
+import {CSSProperties, useEffect} from "react";
 import {useLayoutEffect, useMemo, useRef, useState} from "react";
 import DivideChunks from "@utils";
 
@@ -16,14 +16,9 @@ export type SectionInput = {
     items: readonly any[];
 };
 
-const MEASURE_CONTAINER_STYLE: CSSProperties = {
-    position: "absolute",
-    opacity: 0,
-    pointerEvents: "none",
-    left: "-10000px",
-    top: 0,
-    width: "100%"
-};
+const useIsomorphicLayoutEffect =
+    typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 
 export function groupByType(pageItems: FlatItem[]): { type: ItemType; data: any[] }[] {
     const groups: { type: ItemType; data: any[] }[] = [];
@@ -64,14 +59,20 @@ export function usePagedLayout({
         }
     };
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         if (chunkMatrix !== null) return;
         if (flatItems.length === 0) {
             setChunkMatrix([]);
             return;
         }
 
-        const weights = flatItems.map((_, index) => itemRefs.current[index]?.offsetHeight ?? 0);
+        const weights = flatItems.map((_, index) => {
+            const item = itemRefs.current[index];
+            if(!item) return 0;
+
+            return item.getBoundingClientRect().height;
+        });
+
         const next = DivideChunks(flatItems, weights, pageHeight);
 
         setChunkMatrix(next);
