@@ -26,7 +26,7 @@ async function main() {
     // Export as standard A4 for ATS compatibility
     await page.pdf({
         path: outputPath,
-        format: 'A4',
+        format: 'A3',
         printBackground: true,
         preferCSSPageSize: true, // Allows CSS @page { size: A4; } to dictate margins
     });

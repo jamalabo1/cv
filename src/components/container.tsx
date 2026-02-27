@@ -1,12 +1,13 @@
-import React, {FCWithChildren} from 'react';
+import React, {ExtendableDiv, forwardRef} from 'react';
 
-const Container: FCWithChildren = ({children}) => {
+const Container: ExtendableDiv = ({children, ...rest}) => {
     return (
         <div
-            className='w-full text-slate-800 antialiased'>
+            className='w-full text-slate-800 antialiased'
+            {...rest}
+        >
 
-            <div id='resume' className="mx-auto max-w-4xl p-4">
-
+            <div className="mx-auto max-w-4xl p-4">
                 <section
                     className="bg-white rounded-3xl shadow-[0_20px_50px_-20px_rgb(2,6,23,0.2)] ring-1 ring-slate-200 overflow-hidden">
                     {children}

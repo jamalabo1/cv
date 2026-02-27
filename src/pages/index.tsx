@@ -1,13 +1,20 @@
 import * as React from "react"
-import {FC} from "react"
+import {FC, RefObject, useLayoutEffect, useRef, useState} from "react"
 import type {HeadFC, PageProps} from "gatsby"
 import {graphql} from 'gatsby';
 import PageHeader from "../components/header";
-import Card from "@components/card";
-import Chip from "@components/chip";
 import Container from "@components/container";
 import Elements from "@components/elements";
-
+import DivideChunks from '@utils'
+import {
+    CollectablesProvider,
+    CoreSkillsSection,
+    EducationSection,
+    HighlightedCoursesSection,
+    OverviewSection,
+    SelectedProjectsSection
+} from "@components/elm";
+import {CollectableItemType} from "../types/collectable";
 
 type DeepRequired<T> = {
     [K in keyof T]-?: NonNullable<T[K]> extends object
@@ -15,211 +22,96 @@ type DeepRequired<T> = {
         : NonNullable<T[K]>;
 };
 
+
+
+const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
+                                                                       dataJson: data
+                                                                   }) => {
+
+
+    const mapRef = useRef<{ elements: Map<string, CollectableItemType> }>({
+        elements: new Map(),
+    });
+    const registerFunc = (id: any, item: CollectableItemType) => {
+        mapRef.current.elements.set(id, item);
+    };
+
+    const [chunks, setChunks] = useState<Item[][]>([]);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+        if (!containerRef.current || chunks.length > 0) return;
+
+        const children = Array.from(containerRef.current.children);
+        const heights = children.map(child => child.getBoundingClientRect().height);
+
+        console.log(children);
+        console.log(heights)
+        DivideChunks(children, heights, 900);
+        console.log(mapRef.current.elements);
+
+
+        // Execute splitting algorithm using 'heights' array
+        // setChunks(algorithmResult)
+    }, []);
+
+
+    const {
+        description,
+        links,
+        sections: {
+            note,
+            summary_highlights,
+            projects,
+            courses,
+            education,
+            skills
+        },
+    } = data;
+
+    return (
+        <CollectablesProvider
+            value={{
+                registerFunc
+            }}
+        >
+            <Container>
+                <PageHeader description={description} links={links}/>
+
+                <div className="p-8 pb-10" ref={containerRef}>
+                    <Elements.Note>{note}</Elements.Note>
+
+                    <OverviewSection note={note} summaryHighlights={summary_highlights}/>
+
+                    <SelectedProjectsSection projects={projects}/>
+
+                    <HighlightedCoursesSection courses={courses}/>
+
+                    <EducationSection education={education}/>
+
+                    <CoreSkillsSection skills={skills}/>
+                </div>
+            </Container>
+
+            <Container>
+                <div className="p-8 pb-10">more content?</div>
+            </Container>
+        </CollectablesProvider>
+    );
+};
+
 const IndexPage: FC<
     PageProps<
         DeepRequired<Queries.ResumeQuery>
-    >
-> = ({
-         data: {
-             dataJson: {
-                 description,
-                 links,
-                 sections: {
-                     note,
-                     summary_highlights,
-                     skills,
-                     projects,
-                     education,
-                     courses
-                 },
-             }
-         }
-     }) => {
-
+    >>
+    = ({data}) => {
     return (
+        <IndexPageComponent
+            dataJson={data.dataJson}
+        />
 
-        <Container>
-
-
-            <PageHeader
-                description={description}
-                links={links}
-            />
-
-            <div className="p-8 pb-10">
-
-                <Elements.Note>
-                    {note}
-                </Elements.Note>
-
-                <Elements.Component>
-
-                    <Card.Title>
-                        Overview
-                    </Card.Title>
-                    <div className="mt-3 grid grid-cols-3 gap-6">
-
-                        <Card
-                            className="col-span-2 p-5 shadow-sm"
-                        >
-                            <Card.Title>
-                                Summary
-                            </Card.Title>
-                            <Card.Content>
-                                {summary_highlights.summary.content}
-                            </Card.Content>
-                        </Card>
-
-                        <Card
-                            className="flex flex-col gap-2 p-5 shadow-sm"
-                        >
-                            <Card.Title>
-                                Highlights
-                            </Card.Title>
-
-                            <ul className="space-y-2 text-sm">
-                                {
-                                    summary_highlights.highlights.content.map(highlight => (
-                                        <Elements.ListAnchor
-                                            key={highlight}
-                                        >
-                                            {highlight}
-                                        </Elements.ListAnchor>
-                                    ))
-                                }
-                            </ul>
-                        </Card>
-                    </div>
-                </Elements.Component>
-
-                <Elements.Component breakable>
-
-                    <Card.Title>
-                        Selected Projects
-                    </Card.Title>
-                    <div className="mt-3 grid md:grid-cols-2 gap-4">
-                        {
-                            projects.items.map(project => (
-                                <Card
-                                    key={project.title}
-                                    className="p-5"
-                                >
-                                    <h3 className="font-semibold">
-                                        {project.title}
-                                    </h3>
-                                    <p className="mt-1 text-sm text-slate-700">
-                                        {project.description}
-                                    </p>
-                                    <ul className="mt-2 text-xs text-slate-600 space-y-1 list-disc pl-5">
-                                        {
-                                            project.highlights.map((hl) => (
-                                                <li key={hl}>
-                                                    {hl}
-                                                </li>
-                                            ))
-                                        }
-                                    </ul>
-                                </Card>
-                            ))
-                        }
-                    </div>
-                </Elements.Component>
-
-                <Elements.Component>
-                    <Card.Title>
-                        Highlighted Courses
-                    </Card.Title>
-                    <div className="mt-3 grid grid-cols-3 gap-4">
-                        {
-                            courses.map(course => (
-                                <Card
-                                    key={course.title}
-                                    className="flex items-center justify-center p-5"
-                                >
-                                    <h3 className="font-semibold break-words hyphens-auto text-center">
-                                        {course.title}
-                                        <span className='px-1'>
-                                        -
-                                        </span>
-                                        <span className='text-brand-700'>
-                                            {course.id}
-                                        </span>
-                                    </h3>
-                                </Card>
-                            ))
-                        }
-                    </div>
-                </Elements.Component>
-
-
-                {
-                    //mt-4 grid gap-6
-                }
-                < Elements.Component>
-                    <Card className='p-4'>
-                        <Card.Title>
-                            Education
-                        </Card.Title>
-                        <div className="mt-2 text-sm text-slate-700">
-                            {
-                                <div
-                                    key={`${education.degree}-${education.institution}`}
-                                    className="flex items-baseline justify-between"
-                                >
-                                    <p className="font-medium">
-                                        {education.degree} — {education.institution}
-                                    </p>
-                                    <span className="text-slate-500">
-                                        {education.year} -
-                                    </span>
-                                </div>
-                            }
-                        </div>
-                    </Card>
-                </Elements.Component>
-
-
-                < Elements.Component>
-                    <Card.Title>Core Skills</Card.Title>
-
-                    <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {
-                            skills.items.map((skill) => (
-                                <Card
-                                    key={skill.title}
-                                    className="flex flex-col justify-between rounded-2xl border border-slate-200 p-4 bg-white/70"
-                                >
-                                    <div>
-                                        <h3 className="font-semibold">
-                                            {skill.title}
-                                        </h3>
-                                        <p className="mt-1 text-sm text-slate-600">
-                                            {skill.description}
-                                        </p>
-                                    </div>
-                                    <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                                        {
-                                            skill.tags.map((tag) => (
-                                                <Chip
-                                                    key={tag}
-                                                >
-                                                    {tag}
-                                                </Chip>
-                                            ))
-                                        }
-                                    </div>
-                                </Card>
-                            ))
-                        }
-                    </div>
-                </Elements.Component>
-
-
-            </div>
-
-        </Container>
-    );
-};
+    )
+}
 
 
 export default IndexPage

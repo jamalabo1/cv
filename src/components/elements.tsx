@@ -42,7 +42,7 @@ const Atomic: FC<HTMLProps<HTMLDivElement> & { disable?: boolean }> = ({classNam
 type ComponentProps = {
     breakable?: boolean
 }
-const Component: FC<PropsWithChildren<ComponentProps>> = ({children, breakable = false}) => {
+const Component: FC<PropsWithChildren<ComponentProps>> = ({children, breakable = true}) => {
     return (
         <Atomic className={"mt-8"} disable={breakable}>
             {children}
