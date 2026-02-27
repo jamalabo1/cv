@@ -11,8 +11,6 @@ export default function DivideChunks(elements: any[], weights: number[], maxSize
     for (let i = 0; i < n; i++) {
         sums[i + 1] = sums[i] + weights[i];
     }
-    console.log(sums);
-
     // the dp array
     const dp = Array(n + 1).fill(Infinity); // start with inf as init value
     // start-end segment
@@ -45,25 +43,22 @@ export default function DivideChunks(elements: any[], weights: number[], maxSize
     }
 
 
-    const chunks = [];
+    const chunks: number[][] = [];
 
     let i = n;
 
     while (i > 0) {
         // the ses array is like a function, we need to keep applying it until we reach ses^i(x) = 0
-        let start = ses[i];
+        const start = ses[i];
 
-        chunks.push(
-            [
-                elements.slice(start, i),
-                weights.slice(start, i)
-            ]
-        )
+        const indices: number[] = [];
+        for (let j = start; j < i; j++) {
+            indices.push(j);
+        }
 
+        chunks.push(indices);
         i = start;
     }
-
-    console.log(chunks);
 
     return chunks.reverse();
 }

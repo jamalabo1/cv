@@ -1,73 +1,109 @@
 import * as React from "react"
-import {FC, RefObject, useLayoutEffect, useRef, useState} from "react"
+import {FC, useCallback, useMemo} from "react"
 import type {HeadFC, PageProps} from "gatsby"
 import {graphql} from 'gatsby';
 import PageHeader from "../components/header";
 import Container from "@components/container";
-import Elements from "@components/elements";
-import DivideChunks from '@utils'
 import {
     CollectablesProvider,
     CoreSkillsSection,
-    EducationSection,
     HighlightedCoursesSection,
+    SelectedProjectsSection,
+    ProjectCard,
+    SkillCard,
+    CourseCard,
     OverviewSection,
-    SelectedProjectsSection
+    EducationSection
 } from "@components/elm";
-import {CollectableItemType} from "../types/collectable";
+import {groupByType, usePagedLayout} from "../hooks/usePagedLayout";
 
 type DeepRequired<T> = {
     [K in keyof T]-?: NonNullable<T[K]> extends object
         ? DeepRequired<NonNullable<T[K]>>
         : NonNullable<T[K]>;
 };
-
-
-
 const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                                                                        dataJson: data
                                                                    }) => {
-
-
-    const mapRef = useRef<{ elements: Map<string, CollectableItemType> }>({
-        elements: new Map(),
-    });
-    const registerFunc = (id: any, item: CollectableItemType) => {
-        mapRef.current.elements.set(id, item);
-    };
-
-    const [chunks, setChunks] = useState<Item[][]>([]);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    useLayoutEffect(() => {
-        if (!containerRef.current || chunks.length > 0) return;
-
-        const children = Array.from(containerRef.current.children);
-        const heights = children.map(child => child.getBoundingClientRect().height);
-
-        console.log(children);
-        console.log(heights)
-        DivideChunks(children, heights, 900);
-        console.log(mapRef.current.elements);
-
-
-        // Execute splitting algorithm using 'heights' array
-        // setChunks(algorithmResult)
+    const registerFunc = useCallback(() => {
     }, []);
-
 
     const {
         description,
         links,
         sections: {
-            note,
-            summary_highlights,
             projects,
             courses,
+            skills,
+            summary_highlights,
             education,
-            skills
+            note
         },
     } = data;
+
+    const PAGE_HEIGHT = 900;
+
+    const sections = useMemo(() => ([
+        {type: "overview", items: [summary_highlights]},
+        {type: "project", items: projects.items},
+        {type: "course", items: courses},
+        {type: "education", items: [education]},
+        {type: "skill", items: skills.items},
+    ]), [summary_highlights, projects.items, courses, education, skills.items]);
+
+    const {
+        flatItems,
+        pages,
+        measureRef,
+        measureContainerStyle
+    } = usePagedLayout({
+        sections,
+        pageHeight: PAGE_HEIGHT
+    });
+
+    const renderMeasureItem = (item: typeof flatItems[number]) => {
+        switch (item.type) {
+            case "overview":
+                return (
+                    <OverviewSection
+                        note={note}
+                        summaryHighlights={item.data}
+                    />
+                );
+            case "project":
+                return <ProjectCard project={item.data}/>;
+            case "skill":
+                return <SkillCard skill={item.data}/>;
+            case "course":
+                return <CourseCard course={item.data}/>;
+            case "education":
+                return <EducationSection education={item.data}/>;
+            default:
+                return null;
+        }
+    };
+
+    const renderGroup = (group: { type: "overview" | "project" | "course" | "education" | "skill"; data: any[] }) => {
+        switch (group.type) {
+            case "overview":
+                return (
+                    <OverviewSection
+                        note={note}
+                        summaryHighlights={group.data[0]}
+                    />
+                );
+            case "project":
+                return <SelectedProjectsSection projects={{items: group.data}}/>;
+            case "education":
+                return <EducationSection education={group.data[0]}/>;
+            case "skill":
+                return <CoreSkillsSection skills={{items: group.data}}/>;
+            case "course":
+                return <HighlightedCoursesSection courses={group.data}/>;
+            default:
+                return null;
+        }
+    };
 
     return (
         <CollectablesProvider
@@ -75,27 +111,33 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                 registerFunc
             }}
         >
-            <Container>
-                <PageHeader description={description} links={links}/>
-
-                <div className="p-8 pb-10" ref={containerRef}>
-                    <Elements.Note>{note}</Elements.Note>
-
-                    <OverviewSection note={note} summaryHighlights={summary_highlights}/>
-
-                    <SelectedProjectsSection projects={projects}/>
-
-                    <HighlightedCoursesSection courses={courses}/>
-
-                    <EducationSection education={education}/>
-
-                    <CoreSkillsSection skills={skills}/>
-                </div>
-            </Container>
-
-            <Container>
-                <div className="p-8 pb-10">more content?</div>
-            </Container>
+            {pages === null ? (
+                <Container>
+                    <PageHeader description={description} links={links}/>
+                    <div className="relative p-8 pb-10">
+                        <div style={measureContainerStyle} aria-hidden>
+                            {flatItems.map((item, index) => (
+                                <div key={`${item.type}-${index}`} ref={measureRef(index)}>
+                                    {renderMeasureItem(item)}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </Container>
+            ) : (
+                pages.map((pageItems, pageIndex) => (
+                    <Container key={pageIndex}>
+                        {pageIndex === 0 ? <PageHeader description={description} links={links}/> : null}
+                        <div className="relative p-8 pb-10">
+                            {groupByType(pageItems).map((group, index) => (
+                                <React.Fragment key={`${group.type}-${index}`}>
+                                    {renderGroup(group)}
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </Container>
+                ))
+            )}
         </CollectablesProvider>
     );
 };

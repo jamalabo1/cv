@@ -91,30 +91,6 @@ const Collectable: FCWithChildren<{ type: string }> = ({children, type}) => {
     )
 };
 
-function CollectableChunks<T>({items, size}: { size: number, items: T[] }) {
-
-    const chunks = chunk(items, size);
-
-    return (
-        <Elements.Component breakable>
-            <Card.Title>Selected </Card.Title>
-
-            <div className="mt-3 grid gap-4">
-                {chunks.map((chunk) => (
-                    <Collectable type={"project"}>
-                        <div className="grid grid-cols-2 gap-2">
-                            {
-                                chunk.map((project) => (
-                                    <ProjectCard key={project.title} project={project}/>
-                                ))
-                            }
-                        </div>
-                    </Collectable>
-                ))}
-            </div>
-        </Elements.Component>
-    );
-}
 
 
 /* ----------------------------- Reusable cards ----------------------------- */
