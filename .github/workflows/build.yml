@@ -61,7 +61,7 @@ jobs:
             if curl -4 -sSf http://127.0.0.1:4173/ >/dev/null; then
               echo "server is up"
               break
-            fi
+            fi 
 
             # if server crashed, show logs and fail early
             if ! kill -0 "$SERVER_PID" 2>/dev/null; then
