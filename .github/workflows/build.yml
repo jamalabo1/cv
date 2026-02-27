@@ -38,8 +38,6 @@ jobs:
 
       - name: export (serve public + print to PDF)
         run: |
-          set -euo pipefail
-
           mkdir -p out
 
           # Start a simple static server for ./public
