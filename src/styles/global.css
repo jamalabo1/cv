@@ -11,3 +11,12 @@
     --color-brand-600: #4f46e5;
     --color-brand-700: #4338ca;
 }
+
+
+@page { size: A3; margin: 8mm; }
+
+
+.pageA3 {
+    width: 297mm;
+    height: 396mm; /* 420mm - 24mm margins */
+}
