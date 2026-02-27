@@ -31,35 +31,54 @@ jobs:
       - name: Prepare packages
         run: |
           npm ci --omit=dev
-          npm install playwright
+          npm install playwright@1.56.1
 
       - name: build
         run: npm run build
 
       - name: export (serve public + print to PDF)
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p out
 
-          # Start a simple static server for ./public
-          python3 -m http.server 4173 --directory public >/tmp/http.log 2>&1 &
-          SERVER_PID=$!
+          # sanity checks
+          ls -la public
 
-          # wait 30 secs for server
-          for i in {1..30}; do
-            if curl -sSf http://127.0.0.1:4173/ >/dev/null; then
+          # ensure python exists (Playwright image may not include it)
+          if ! command -v python3 >/dev/null 2>&1; then
+            apt-get update
+            apt-get install -y python3
+          fi
+
+          # start server
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory public >/tmp/http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; echo "---- http.log ----"; tail -n 200 /tmp/http.log || true' EXIT
+
+          # wait until ready
+          for i in $(seq 1 60); do
+            if curl -4 -sSf http://127.0.0.1:4173/ >/dev/null; then
+              echo "server is up"
               break
             fi
+
+            # if server crashed, show logs and fail early
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              echo "server exited early"
+              tail -n 200 /tmp/http.log || true
+              exit 1
+            fi
+
             sleep 1
           done
-
-          BASE_URL="http://127.0.0.1:4173" OUTPUT_PATH="out/output.pdf" node export-pdf.js
+          
+          export BASE_URL="http://localhost:4173"
+          export OUTPUT_PATH="out/output.pdf"
+          node export-pdf.js
 
           # cleanup
           kill "$SERVER_PID"
-      - name: export
-        run: |
-          mkdir -p out
-          OUTPUT_PATH=out/output.pdf node export-pdf.js
 
       - name: upload pdf resume
         uses: actions/upload-artifact@v4

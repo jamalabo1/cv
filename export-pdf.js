@@ -13,7 +13,7 @@ async function main() {
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
     // const url = 'file://' + indexPath.replace(/\\/g, '/');
-    const baseUrl = process.env.BASE_URL || "http://127.0.0.1:4173";
+    const baseUrl = process.env.BASE_URL || "http://localhost:4173";
 
     // await page.setViewportSize({ width: 794 , height: 1032  });
     await page.setViewportSize({ width: 1191, height: 1684 });
