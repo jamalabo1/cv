@@ -7,6 +7,7 @@ export type ItemType = "overview" | "project" | "course" | "education" | "skill"
 export type FlatItem = {
     type: ItemType;
     data: any;
+    groupId: string;
 };
 
 export type PageMatrix = FlatItem[][];
@@ -14,16 +15,9 @@ export type PageMatrix = FlatItem[][];
 export type SectionInput = {
     type: ItemType;
     items: readonly any[];
+    groupSize?: number;
 };
 
-const MEASURE_CONTAINER_STYLE: CSSProperties = {
-    position: "absolute",
-    opacity: 0,
-    pointerEvents: "none",
-    left: "-10000px",
-    top: 0,
-    width: "100%"
-};
 
 export function groupByType(pageItems: FlatItem[]): { type: ItemType; data: any[] }[] {
     const groups: { type: ItemType; data: any[] }[] = [];
@@ -48,10 +42,15 @@ export function usePagedLayout({
     pageHeight: number;
 }) {
     const flatItems = useMemo<FlatItem[]>(
-        () => sections.flatMap((section) => section.items.map((item) => ({
-            type: section.type,
-            data: item
-        }))),
+        () =>
+            sections.flatMap((section, sectionIndex) => {
+                const groupSize = Math.max(1, section.groupSize ?? 1);
+                return section.items.map((item, itemIndex) => ({
+                    type: section.type,
+                    data: item,
+                    groupId: `${section.type}-${sectionIndex}-${Math.floor(itemIndex / groupSize)}`
+                }));
+            }),
         [sections]
     );
 
@@ -72,7 +71,35 @@ export function usePagedLayout({
         }
 
         const weights = flatItems.map((_, index) => itemRefs.current[index]?.offsetHeight ?? 0);
-        const next = DivideChunks(flatItems, weights, pageHeight);
+        const groupRanges: { groupId: string; start: number; end: number }[] = [];
+        flatItems.forEach((item, index) => {
+            const last = groupRanges[groupRanges.length - 1];
+            if (last && last.groupId === item.groupId) {
+                last.end = index;
+            } else {
+                groupRanges.push({groupId: item.groupId, start: index, end: index});
+            }
+        });
+
+        const groupWeights = groupRanges.map((range) => {
+            let sum = 0;
+            for (let i = range.start; i <= range.end; i++) {
+                sum += weights[i] ?? 0;
+            }
+            return sum;
+        });
+
+        const groupedChunks = DivideChunks(groupRanges, groupWeights, pageHeight);
+        const next = groupedChunks.map((page) => {
+            const indices: number[] = [];
+            page.forEach((groupIndex) => {
+                const range = groupRanges[groupIndex];
+                for (let i = range.start; i <= range.end; i++) {
+                    indices.push(i);
+                }
+            });
+            return indices;
+        });
 
         setChunkMatrix(next);
     }, [chunkMatrix, flatItems, pageHeight]);
@@ -86,7 +113,6 @@ export function usePagedLayout({
         flatItems,
         pages,
         chunkMatrix,
-        measureRef,
-        measureContainerStyle: {}
+        measureRef
     };
 }
