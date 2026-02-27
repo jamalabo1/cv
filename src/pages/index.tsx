@@ -7,15 +7,16 @@ import Container from "@components/container";
 import {
     CollectablesProvider,
     CoreSkillsSection,
-    HighlightedCoursesSection,
-    SelectedProjectsSection,
-    ProjectCard,
-    SkillCard,
     CourseCard,
+    EducationSection,
+    HighlightedCoursesSection,
+    NoteSection,
     OverviewSection,
-    EducationSection
+    ProjectCard,
+    SelectedProjectsSection,
+    SkillCard
 } from "@components/elm";
-import {groupByType, usePagedLayout} from "../hooks/usePagedLayout";
+import {groupByType, ItemType, usePagedLayout} from "../hooks/usePagedLayout";
 
 type DeepRequired<T> = {
     [K in keyof T]-?: NonNullable<T[K]> extends object
@@ -41,14 +42,13 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
         },
     } = data;
 
-    const PAGE_HEIGHT = 900;
-
     const sections = useMemo(() => ([
-        {type: "overview", items: [summary_highlights]},
-        {type: "project", items: projects.items, groupSize: 2},
-        {type: "course", items: courses, groupSize: 3},
+        {type: "note", items: [summary_highlights]},
         {type: "education", items: [education]},
-        {type: "skill", items: skills.items, groupSize: 2},
+        {type: "project", items: projects.items, groupSize: 2},
+        {type: "skill", items: skills.items, groupSize: 3},
+        {type: "overview", items: [summary_highlights]},
+        {type: "course", items: courses, groupSize: 3},
     ]), [summary_highlights, projects.items, courses, education, skills.items]);
 
     const {
@@ -56,16 +56,20 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
         pages,
         measureRef
     } = usePagedLayout({
-        sections,
-        pageHeight: PAGE_HEIGHT
+        sections
     });
 
     const renderMeasureItem = (item: typeof flatItems[number]) => {
         switch (item.type) {
+            case "note":
+                return (
+                    <NoteSection
+                        note={note}
+                    />
+                )
             case "overview":
                 return (
                     <OverviewSection
-                        note={note}
                         summaryHighlights={item.data}
                     />
                 );
@@ -82,12 +86,17 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
         }
     };
 
-    const renderGroup = (group: { type: "overview" | "project" | "course" | "education" | "skill"; data: any[] }) => {
+    const renderGroup = (group: { type: ItemType; data: any[] }) => {
         switch (group.type) {
+            case "note":
+                return (
+                    <NoteSection
+                        note={note}
+                    />
+                )
             case "overview":
                 return (
                     <OverviewSection
-                        note={note}
                         summaryHighlights={group.data[0]}
                     />
                 );
@@ -110,6 +119,9 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                 registerFunc
             }}
         >
+            {/*<div>*/}
+            {/*    innerHeight: {window.innerHeight}, outerHeight: {window.outerHeight}*/}
+            {/*</div>*/}
             {pages === null ? (
                 <Container>
                     <PageHeader description={description} links={links}/>

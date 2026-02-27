@@ -1,8 +1,7 @@
-import type {CSSProperties} from "react";
 import {useLayoutEffect, useMemo, useRef, useState} from "react";
 import DivideChunks from "@utils";
 
-export type ItemType = "overview" | "project" | "course" | "education" | "skill";
+export type ItemType = "overview" | "project" | "course" | "education" | "skill" | "note";
 
 export type FlatItem = {
     type: ItemType;
@@ -35,12 +34,16 @@ export function groupByType(pageItems: FlatItem[]): { type: ItemType; data: any[
 }
 
 export function usePagedLayout({
-                                   sections,
-                                   pageHeight
+                                   sections
                                }: {
     sections: readonly SectionInput[];
-    pageHeight: number;
 }) {
+
+    const CHUNK_PARAMS = typeof window !== "undefined" ? [
+        window.innerHeight - 400,
+        window.innerHeight
+    ] : [900, 1200];
+
     const flatItems = useMemo<FlatItem[]>(
         () =>
             sections.flatMap((section, sectionIndex) => {
@@ -89,7 +92,7 @@ export function usePagedLayout({
             return sum;
         });
 
-        const groupedChunks = DivideChunks(groupRanges, groupWeights, pageHeight);
+        const groupedChunks = DivideChunks(groupRanges, groupWeights, CHUNK_PARAMS);
         const next = groupedChunks.map((page) => {
             const indices: number[] = [];
             page.forEach((groupIndex) => {
@@ -102,7 +105,12 @@ export function usePagedLayout({
         });
 
         setChunkMatrix(next);
-    }, [chunkMatrix, flatItems, pageHeight]);
+
+        if (typeof window !== "undefined") {
+            window.__PDF_READY__ = true;
+            document.documentElement.dataset.pdfReady = "1";
+        }
+    }, [chunkMatrix, flatItems]);
 
     const pages = useMemo<PageMatrix | null>(() => {
         if (chunkMatrix === null) return null;

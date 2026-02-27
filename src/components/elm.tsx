@@ -140,18 +140,24 @@ export function SkillCard({skill}: { skill: Skill }) {
 
 /* ------------------------------ Page sections ----------------------------- */
 
+export function NoteSection({
+                                note
+                            }: { note: string }) {
+    return (
+        <Elements.Note>
+            {note}
+        </Elements.Note>
+    )
+}
+
 export function OverviewSection({
-                                    note,
                                     summaryHighlights,
                                 }: {
-    note: React.ReactNode;
     summaryHighlights: SummaryHighlights;
 }) {
     return (
         <>
-            <Elements.Note>
-                {note}
-            </Elements.Note>
+
             <Elements.Component>
                 <Card.Title>Overview</Card.Title>
                 <div className="mt-3 grid grid-cols-3 gap-6">

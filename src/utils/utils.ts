@@ -1,7 +1,7 @@
 /*
 * divides elements with weights indexed by position in elements in knuth-palas like algorithm
 * **/
-export default function DivideChunks(elements: any[], weights: number[], maxSize: number): number[][] {
+export default function DivideChunks(elements: any[], weights: number[], maxSizes: number[]): number[][] {
     if (elements.length == 0) return [];
     const n = elements.length;
 
@@ -16,20 +16,28 @@ export default function DivideChunks(elements: any[], weights: number[], maxSize
     // start-end segment
     const ses = Array(n + 1).fill(-1);
 
+    // for first size length
+    const depth = Array(n + 1).fill(0);
+
     dp[0] = 0;
 
     for (let i = 1; i <= n; i++) {
         for (let j = 0; j < i; j++) {
             //weight
             const w = sums[i] - sums[j] // weights of the elements [i, j]
+            // if first page, then use first maxSize, otherwise the other.
+            const currentChunkIndex = depth[j];
+            const maxSize = (currentChunkIndex === 0) ? maxSizes[0] : maxSizes[1];
 
             if (maxSize < w) {
                 // this solution cannot be accepted
                 continue;
             }
 
-            const cost = (j < n) ? Math.pow(maxSize - w, 2) : 0 // if last page don't pay
+            // very high penalty for the first page to be empty.
+            const p = currentChunkIndex === 0 ? 3 : 2;
 
+            const cost = (j < n) ? Math.pow((maxSize - w), p) : 0 // if last page don't pay
 
             // what if we ended the segment at j?
             if (dp[j] + cost < dp[i]) {
@@ -37,11 +45,12 @@ export default function DivideChunks(elements: any[], weights: number[], maxSize
                 dp[i] = dp[j] + cost
 
                 // and the last page actually started here
-                ses[i] = j
+                ses[i] = j;
+
+                depth[i] = depth[j] + 1;
             }
         }
     }
-
 
     const chunks: number[][] = [];
 

@@ -12,10 +12,18 @@ async function main() {
     const outputPath = process.env.OUTPUT_PATH || path.resolve(__dirname, 'output.pdf');
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
-    const url = 'file://' + indexPath.replace(/\\/g, '/');
+    // const url = 'file://' + indexPath.replace(/\\/g, '/');
+    const baseUrl = process.env.BASE_URL || "http://127.0.0.1:4173";
+
+    // await page.setViewportSize({ width: 794 , height: 1032  });
+    await page.setViewportSize({ width: 1191, height: 1684 });
 
     // Wait for network to settle (React/Gatsby hydration)
-    await page.goto(url, { waitUntil: 'networkidle' });
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+
+    // wait for react
+    await page.waitForFunction(() => window.__PDF_READY__ === true);
+
 
     // Force CSS media type to screen to retain Tailwind styling
     await page.emulateMedia({ media: 'screen' });
@@ -28,7 +36,7 @@ async function main() {
         path: outputPath,
         format: 'A3',
         printBackground: true,
-        preferCSSPageSize: true, // Allows CSS @page { size: A4; } to dictate margins
+        preferCSSPageSize: true,
     });
 
     await browser.close();
