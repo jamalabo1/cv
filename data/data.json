@@ -1,9 +1,10 @@
 {
   "name": "Jamal Abo Mokh",
-  "description": "Mathematics & CS Undergraduate",
+  "description": "Mathematics & CS Undergraduate | Technion",
   "links": [
     "github.com/jamalabo1",
-    "linkedin.com/in/jamal-abo-mokh"
+    "linkedin.com/in/jamal-abo-mokh",
+    "jamal.abo@campus.technion.ac.il"
   ],
   "sections": {
     "note": "This resume was written in react & tailwind, ssg using gatsby and exported to pdf with playwright and brought to you through github actions artifacts. source code is available in my github",
@@ -77,7 +78,7 @@
       "items": [
         {
           "title": "Multimodal Asset Catalog Pipeline",
-          "description": "Local-first data pipeline utilizing vision-language models and semantic search to ingest, process, and organize large-scale image and document collections.",
+          "description": "Local-first data pipeline utilizing vision-language models and semantic search to ingest, process, and organize image and document collections.",
           "highlights": [
             "Integrated VL models (CLIP, Qwen) and YOLO for automated asset tagging and zero-shot classification",
             "Implemented vector-based semantic search and OCR for complex multimodal retrieval",
@@ -89,7 +90,7 @@
           "title": "Event-Driven Logistics Platform",
           "description": "A distributed .NET microservices platform managing order orchestration, parcel routing, and physical label printing. with a React Native mobile application for warehouse operators.",
           "highlights": [
-            "Saga orchestration, resilient messaging, and observability",
+            "Saga orchestration, containerization, and observability",
             "Expo RN app with react-query w/ graphql",
             "Playwright & Tailwind statistical reports",
             "On Premise QL-700 controller for package labeling",

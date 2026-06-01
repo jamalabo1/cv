@@ -116,6 +116,9 @@
       ],
       "@styles/*": [
         "./src/styles/*"
+      ],
+      "@utils": [
+        "./src/utils/utils.ts"
       ]
     }
   },

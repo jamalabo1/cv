@@ -1,4 +1,4 @@
-const {chromium} = require('playwright');
+const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
@@ -10,44 +10,33 @@ async function main() {
     }
 
     const outputPath = process.env.OUTPUT_PATH || path.resolve(__dirname, 'output.pdf');
-
-    const browser = await chromium.launch({headless: true});
-
+    const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
+    // const url = 'file://' + indexPath.replace(/\\/g, '/');
+    const baseUrl = process.env.BASE_URL || "http://localhost:4173";
 
-    const url = 'file://' + indexPath.replace(/\\/g, '/');
+    // await page.setViewportSize({ width: 794 , height: 1032  });
+    await page.setViewportSize({ width: 1191, height: 1684 });
 
-    await page.goto(url, {waitUntil: 'networkidle'});
+    // Wait for network to settle (React/Gatsby hydration)
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
 
-    await page.emulateMedia({ media: "screen" });
+    // wait for react
+    await page.waitForFunction(() => window.__PDF_READY__ === true);
 
-    const { width, height } = await page.evaluate(() => {
-        const body = document.body;
-        const html = document.documentElement;
-        const fullWidth = Math.max(
-            body.scrollWidth,
-            body.offsetWidth,
-            html.clientWidth,
-            html.scrollWidth,
-            html.offsetWidth
-        );
-        const fullHeight = Math.max(
-            body.scrollHeight,
-            body.offsetHeight,
-            html.clientHeight,
-            html.scrollHeight,
-            html.offsetHeight
-        );
-        return { width: fullWidth, height: fullHeight };
-    });
 
+    // Force CSS media type to screen to retain Tailwind styling
+    await page.emulateMedia({ media: 'screen' });
+
+    // Explicitly wait for all web fonts to load to prevent vector/ligature errors
+    await page.evaluate(() => document.fonts.ready);
+
+    // Export as standard A4 for ATS compatibility
     await page.pdf({
         path: outputPath,
-        width: `${width}px`,
-        height: `${height}px`,
+        format: 'A3',
         printBackground: true,
-        scale: 1,
-        preferCSSPageSize: false,
+        preferCSSPageSize: true,
     });
 
     await browser.close();
