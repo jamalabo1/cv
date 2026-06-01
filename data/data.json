@@ -107,6 +107,83 @@
         }
       ]
     },
+    "math_work": {
+      "title": "Selected Mathematical Work",
+      "description": "A selected math proofs portfolio on topology, complex analysis, number theory.",
+      "repo": "github.com/jamalabo1/math",
+      "items": [
+        {
+          "title": "Noetherian Spaces",
+          "area": "Topology / Algebraic Geometry",
+          "file": "project1.pdf",
+          "url": "https://github.com/jamalabo1/math/blob/main/topology/project1.pdf",
+          "summary": "Noetherian topological spaces, behavior and irreducible decomposition arguments.",
+          "tags": [
+            "Topology",
+            "Noetherian Spaces",
+            "Irreducibility"
+          ]
+        },
+        {
+          "title": "Baire Category Theorem",
+          "area": "Topology / Metric Spaces",
+          "file": "baire.pdf",
+          "url": "https://github.com/jamalabo1/math/blob/main/topology/baire.pdf",
+          "summary": "completeness, category, and structural topological arguments.",
+          "tags": [
+            "Topology",
+            "Completeness",
+            "Proofs"
+          ]
+        },
+        {
+          "title": "Topologist's Sine Curve",
+          "area": "Topology",
+          "file": "sine_top.pdf",
+          "url": "https://github.com/jamalabo1/math/blob/main/topology/sine_top.pdf",
+          "summary": "Analysis of a classical counterexample, proving connectedness, closures, and limiting behavior.",
+          "tags": [
+            "Topology",
+            "Metric Spaces"
+          ]
+        },
+        {
+          "title": "Injective Entire Functions",
+          "area": "Complex Analysis",
+          "file": "injective.pdf",
+          "url": "https://github.com/jamalabo1/math/blob/main/complex_analysis/injective.pdf",
+          "summary": "Proof that injective entire functions are linear.",
+          "tags": [
+            "Complex Analysis",
+            "Entire Functions",
+            "Polynomials"
+          ]
+        },
+        {
+          "title": "Arithmetic Topology",
+          "area": "Number Theory / Topology",
+          "file": "arth_top.pdf",
+          "url": "https://github.com/jamalabo1/math/blob/main/number_theory/arth_top.pdf",
+          "summary": "Topology flavored proof work connecting arithmetic sequences with topology.",
+          "tags": [
+            "Number Theory",
+            "Topology",
+            "Primes"
+          ]
+        },
+        {
+          "title": "Euler Phi Function",
+          "area": "Number Theory",
+          "file": "phi.pdf",
+          "url": "https://github.com/jamalabo1/math/blob/main/number_theory/phi.pdf",
+          "summary": "Elementary number theoretic proof work around divisibility, prime decompositions, and arithmetic functions.",
+          "tags": [
+            "Number Theory",
+            "Euler's Phi"
+          ]
+        }
+      ]
+    },
     "education": {
       "degree": "B.Sc. in Mathematics with Computer Science",
       "institution": "Technion",
@@ -132,6 +209,10 @@
       {
         "id": "104142",
         "title": "Intro to metric and topological spaces"
+      },
+      {
+        "id": "1040122",
+        "title": "Complex Analysis"
       }
     ]
   }

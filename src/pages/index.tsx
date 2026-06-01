@@ -28,6 +28,7 @@ const IndexPage: FC<
                      summary_highlights,
                      skills,
                      projects,
+                     math_work,
                      education,
                      courses
                  },
@@ -115,6 +116,66 @@ const IndexPage: FC<
                                             ))
                                         }
                                     </ul>
+                                </Card>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div className="mt-8">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <Card.Title>
+                            {math_work.title}
+                        </Card.Title>
+                        <a
+                            href={`https://${math_work.repo}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs font-medium text-brand-700 underline decoration-brand-200 underline-offset-2"
+                        >
+                            {math_work.repo}
+                        </a>
+                    </div>
+                    <p className="mt-2 text-sm text-slate-700">
+                        {math_work.description}
+                    </p>
+                    <div className="mt-3 grid md:grid-cols-2 gap-4">
+                        {
+                            math_work.items.map(item => (
+                                <Card
+                                    key={item.file}
+                                    className="p-4 flex flex-col justify-between"
+                                >
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3 className="font-semibold">
+                                                {item.title}
+                                            </h3>
+                                            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-brand-700">
+                                                {item.area}
+                                            </p>
+                                        </div>
+                                        <a
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="shrink-0 text-xs font-medium text-brand-700 underline decoration-brand-200 underline-offset-2"
+                                        >
+                                            PDF
+                                        </a>
+                                    </div>
+                                    <p className="mt-2 text-sm text-slate-700">
+                                        {item.summary}
+                                    </p>
+                                    <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                                        {
+                                            item.tags.map(tag => (
+                                                <Chip key={tag}>
+                                                    {tag}
+                                                </Chip>
+                                            ))
+                                        }
+                                    </div>
                                 </Card>
                             ))
                         }
@@ -251,6 +312,19 @@ export const query = graphql`
                         title
                         description
                         highlights
+                    }
+                }
+                math_work {
+                    title
+                    description
+                    repo
+                    items {
+                        title
+                        area
+                        file
+                        url
+                        summary
+                        tags
                     }
                 }
                 education {
