@@ -47,13 +47,13 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
     } = data;
 
     const sections = useMemo<readonly SectionInput[]>(() => ([
-        {type: "note", items: [summary_highlights]},
         {type: "education", items: [education]},
         {type: "project", items: projects.items, groupSize: 2},
         {type: "math_work", items: math_work.items, groupSize: 2},
         {type: "skill", items: skills.items, groupSize: 3},
         {type: "overview", items: [summary_highlights]},
         {type: "course", items: courses, groupSize: 3},
+        {type: "note", items: [summary_highlights]},
     ]), [summary_highlights, projects.items, math_work.items, courses, education, skills.items]);
 
     const {

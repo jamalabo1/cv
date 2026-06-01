@@ -202,7 +202,6 @@ export function OverviewSection({
 }) {
     return (
         <>
-
             <Elements.Component>
                 <Card.Title>Overview</Card.Title>
                 <div className="mt-3 grid grid-cols-3 gap-6">
@@ -211,7 +210,6 @@ export function OverviewSection({
                 </div>
             </Elements.Component>
         </>
-
     );
 }
 
@@ -273,7 +271,7 @@ export function HighlightedCoursesSection({courses}: { courses: readonly Course[
 
 export function EducationSection({education}: { education: Education }) {
     return (
-        <Elements.Component>
+        <Elements.Component className={""}>
             <Card className="p-4">
                 <Card.Title>Education</Card.Title>
 

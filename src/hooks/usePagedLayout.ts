@@ -40,7 +40,7 @@ export function usePagedLayout({
 }) {
 
     const CHUNK_PARAMS = typeof window !== "undefined" ? [
-        window.innerHeight - 400,
+        window.innerHeight - 300,
         window.innerHeight
     ] : [900, 1200];
 
