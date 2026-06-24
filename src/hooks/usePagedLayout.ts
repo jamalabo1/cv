@@ -1,7 +1,7 @@
 import {useLayoutEffect, useMemo, useRef, useState} from "react";
 import DivideChunks from "@utils";
 
-export type ItemType = "overview" | "project" | "course" | "education" | "skill" | "note";
+export type ItemType = "overview" | "project" | "math_work" | "course" | "education" | "skill" | "note";
 
 export type FlatItem = {
     type: ItemType;
@@ -40,7 +40,7 @@ export function usePagedLayout({
 }) {
 
     const CHUNK_PARAMS = typeof window !== "undefined" ? [
-        window.innerHeight - 400,
+        window.innerHeight - 300,
         window.innerHeight
     ] : [900, 1200];
 

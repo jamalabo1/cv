@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 const Note: FCWithChildren = ({children}) => {
     return (
-        <div className="mb-4">
+        <div className="mt-4">
             <span className="px-2 italic text-slate-600">
                 {children}
             </span>
@@ -42,9 +42,9 @@ const Atomic: FC<HTMLProps<HTMLDivElement> & { disable?: boolean }> = ({classNam
 type ComponentProps = {
     breakable?: boolean
 }
-const Component: FC<PropsWithChildren<ComponentProps>> = ({children, breakable = true}) => {
+const Component: FC<PropsWithChildren<ComponentProps>> = ({children, breakable = true, ...rest}) => {
     return (
-        <Atomic className={"mt-8"} disable={breakable}>
+        <Atomic className={"mt-8"} disable={breakable} {...rest}>
             {children}
         </Atomic>
     );

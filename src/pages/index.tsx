@@ -10,19 +10,22 @@ import {
     CourseCard,
     EducationSection,
     HighlightedCoursesSection,
+    MathWorkCard,
     NoteSection,
     OverviewSection,
     ProjectCard,
+    SelectedMathWorkSection,
     SelectedProjectsSection,
     SkillCard
 } from "@components/elm";
-import {groupByType, ItemType, usePagedLayout} from "../hooks/usePagedLayout";
+import {groupByType, ItemType, SectionInput, usePagedLayout} from "../hooks/usePagedLayout";
 
 type DeepRequired<T> = {
     [K in keyof T]-?: NonNullable<T[K]> extends object
         ? DeepRequired<NonNullable<T[K]>>
         : NonNullable<T[K]>;
 };
+
 const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                                                                        dataJson: data
                                                                    }) => {
@@ -34,6 +37,7 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
         links,
         sections: {
             projects,
+            math_work,
             courses,
             skills,
             summary_highlights,
@@ -42,14 +46,15 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
         },
     } = data;
 
-    const sections = useMemo(() => ([
-        {type: "note", items: [summary_highlights]},
+    const sections = useMemo<readonly SectionInput[]>(() => ([
         {type: "education", items: [education]},
         {type: "project", items: projects.items, groupSize: 2},
+        {type: "math_work", items: math_work.items, groupSize: 2},
         {type: "skill", items: skills.items, groupSize: 3},
         {type: "overview", items: [summary_highlights]},
         {type: "course", items: courses, groupSize: 3},
-    ]), [summary_highlights, projects.items, courses, education, skills.items]);
+        {type: "note", items: [summary_highlights]},
+    ]), [summary_highlights, projects.items, math_work.items, courses, education, skills.items]);
 
     const {
         flatItems,
@@ -75,6 +80,8 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                 );
             case "project":
                 return <ProjectCard project={item.data}/>;
+            case "math_work":
+                return <MathWorkCard item={item.data}/>;
             case "skill":
                 return <SkillCard skill={item.data}/>;
             case "course":
@@ -102,6 +109,17 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                 );
             case "project":
                 return <SelectedProjectsSection projects={{items: group.data}}/>;
+            case "math_work":
+                return (
+                    <SelectedMathWorkSection
+                        mathWork={{
+                            title: math_work.title,
+                            description: math_work.description,
+                            repo: math_work.repo,
+                            items: group.data
+                        }}
+                    />
+                );
             case "education":
                 return <EducationSection education={group.data[0]}/>;
             case "skill":
@@ -119,9 +137,6 @@ const IndexPageComponent: FC<DeepRequired<Queries.ResumeQuery>> = ({
                 registerFunc
             }}
         >
-            {/*<div>*/}
-            {/*    innerHeight: {window.innerHeight}, outerHeight: {window.outerHeight}*/}
-            {/*</div>*/}
             {pages === null ? (
                 <Container>
                     <PageHeader description={description} links={links}/>
@@ -208,6 +223,21 @@ export const query = graphql`
                         title
                         description
                         highlights
+                    }
+                }
+                math_work
+                {
+                    title
+                    description
+                    repo
+                    items
+                    {
+                        title
+                        area
+                        file
+                        url
+                        summary
+                        tags
                     }
                 }
                 education

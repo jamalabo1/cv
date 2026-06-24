@@ -20,6 +20,22 @@ type ProjectsBlock = {
     items: readonly Project[];
 };
 
+type MathWorkItem = {
+    title: string;
+    area: string;
+    file: string;
+    url: string;
+    summary: string;
+    tags: readonly string[];
+};
+
+type MathWorkBlock = {
+    title: string;
+    description: string;
+    repo: string;
+    items: readonly MathWorkItem[];
+};
+
 type Course = {
     title: string;
     id: string;
@@ -109,6 +125,35 @@ export function ProjectCard({project}: { project: Project }) {
     );
 }
 
+export function MathWorkCard({item}: { item: MathWorkItem }) {
+    return (
+        <Card className="p-4 flex flex-col justify-between">
+            <div className="flex items-start justify-between gap-3">
+                <div>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p className="mt-1 text-xs font-medium uppercase tracking-wide text-brand-700">
+                        {item.area}
+                    </p>
+                </div>
+                <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="shrink-0 text-xs font-medium text-brand-700 underline decoration-brand-200 underline-offset-2"
+                >
+                    PDF
+                </a>
+            </div>
+            <p className="mt-2 text-sm text-slate-700">{item.summary}</p>
+            <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                {item.tags.map((tag) => (
+                    <Chip key={tag}>{tag}</Chip>
+                ))}
+            </div>
+        </Card>
+    );
+}
+
 export function CourseCard({course}: { course: Course }) {
     return (
         <Card className="flex items-center justify-center p-5">
@@ -157,7 +202,6 @@ export function OverviewSection({
 }) {
     return (
         <>
-
             <Elements.Component>
                 <Card.Title>Overview</Card.Title>
                 <div className="mt-3 grid grid-cols-3 gap-6">
@@ -166,7 +210,6 @@ export function OverviewSection({
                 </div>
             </Elements.Component>
         </>
-
     );
 }
 
@@ -182,6 +225,31 @@ export function SelectedProjectsSection({projects}: { projects: ProjectsBlock })
                         <ProjectCard key={project.title} project={project}/>
                     )
                 }
+            </div>
+        </Elements.Component>
+    );
+}
+
+export function SelectedMathWorkSection({mathWork}: { mathWork: MathWorkBlock }) {
+    return (
+        <Elements.Component breakable>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <Card.Title>{mathWork.title}</Card.Title>
+                <a
+                    href={`https://${mathWork.repo}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs font-medium text-brand-700 underline decoration-brand-200 underline-offset-2"
+                >
+                    {mathWork.repo}
+                </a>
+            </div>
+            <p className="mt-2 text-sm text-slate-700">{mathWork.description}</p>
+
+            <div className="mt-3 grid grid-cols-2 gap-4">
+                {mathWork.items.map((item) => (
+                    <MathWorkCard key={item.file} item={item}/>
+                ))}
             </div>
         </Elements.Component>
     );
@@ -203,7 +271,7 @@ export function HighlightedCoursesSection({courses}: { courses: readonly Course[
 
 export function EducationSection({education}: { education: Education }) {
     return (
-        <Elements.Component>
+        <Elements.Component className={""}>
             <Card className="p-4">
                 <Card.Title>Education</Card.Title>
 
@@ -236,4 +304,3 @@ export function CoreSkillsSection({skills}: { skills: SkillsBlock }) {
         </Elements.Component>
     );
 }
-
